@@ -85,9 +85,14 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Check for API Key
+      // Check for API Key explicitly
       if (!process.env.API_KEY) {
-        throw new Error("API Key not found. Please configure it in Netlify.");
+         setMessages(prev => [...prev, { 
+          role: 'model', 
+          text: "⚠️ সিস্টেম এরর: API Key কনফিগার করা হয়নি। অনুগ্রহ করে Netlify সেটিংস চেক করুন এবং পুনরায় Deploy করুন।" 
+        }]);
+        setIsLoading(false);
+        return;
       }
 
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
