@@ -52,6 +52,14 @@ const Header: React.FC = () => {
     }, 100);
   };
 
+  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   const navLinks = [
     { name: 'হোম', href: '#home' },
     { name: 'ব্রাঞ্চসমূহ', href: '#branches' },
@@ -76,7 +84,7 @@ const Header: React.FC = () => {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <a href="#home" className="flex items-center gap-3 group">
+              <a href="#home" onClick={scrollToTop} className="flex items-center gap-3 group cursor-pointer">
                 <img 
                   src={logoUrl} 
                   alt="Nibedika Hostel Logo" 

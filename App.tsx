@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Amenities from './components/Amenities';
@@ -8,10 +8,39 @@ import Gallery from './components/Gallery';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
+import { ArrowUp } from 'lucide-react';
 
 const App: React.FC = () => {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   // WhatsApp Automation Message
   const waMessage = encodeURIComponent("আসসালামু আলাইকুম, আমি নিবেদিকা হোস্টেল সম্পর্কে বিস্তারিত জানতে চাই।");
+
+  // Handle Scroll to toggle Top Button visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button only when user is near the bottom of the page
+      // (window.innerHeight + window.scrollY) gives the position of the bottom of the viewport
+      // We check if it is close to the total document height (within 300px of the bottom)
+      const isNearBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 300;
+
+      if (isNearBottom) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
@@ -26,11 +55,22 @@ const App: React.FC = () => {
       </main>
       <Footer />
 
-      {/* AI Chatbot Component (Positioned at bottom-24 right-6 inside the component) */}
+      {/* AI Chatbot Component (Now positioned at bottom-6) */}
       <Chatbot />
 
-      {/* Floating WhatsApp Button (Positioned at bottom-6 right-6) */}
-      <div className="fixed bottom-6 right-6 z-40 group">
+      {/* Scroll to Top Button (Bottom Left) */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 left-6 z-40 bg-gray-900 text-white p-3 rounded-full shadow-lg hover:bg-teal-600 transition-all duration-300 animate-in fade-in slide-in-from-bottom-5 border-2 border-white/20 hover:scale-110"
+          aria-label="Scroll to Top"
+        >
+          <ArrowUp size={24} />
+        </button>
+      )}
+
+      {/* Floating WhatsApp Button (Moved UP to bottom-24 so it sits above the AI button) */}
+      <div className="fixed bottom-24 right-6 z-40 group">
         {/* Ping Animation Layer (Ripple Effect) */}
         <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-75 animate-ping"></span>
         

@@ -76,7 +76,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-xl font-bold mb-6 border-b border-gray-700 pb-2 inline-block">গুরুত্বপূর্ণ এলাকা</h3>
             <div className="flex flex-wrap gap-2">
-              {['ফার্মগেট', 'পান্থপথ', 'গ্রীন রোড', 'রাজাবাজার', 'কাঠালবাগান', 'ধানমন্ডি', 'মণিপুরি পাড়া'].map((tag) => (
+              {['ফার্মগেট', 'পান্থপথ', 'গ্রীন রোড', 'রাজাবাজার', 'কাঠালবাগান', 'ধানমন্ডি'].map((tag) => (
                 <span key={tag} className="bg-gray-800 text-gray-300 px-3 py-1 rounded-full text-sm hover:bg-teal-600 hover:text-white transition-colors cursor-default">
                   {tag}
                 </span>
@@ -92,8 +92,11 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-gray-800 pt-8 text-center">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-sm mb-2">
             © {new Date().getFullYear()} Nibedika Hostel. All rights reserved.
+          </p>
+          <p className="text-gray-600 text-xs flex items-center justify-center gap-1">
+            Created by <span className="text-teal-500 font-semibold tracking-wide">Jubayer Sardar</span>
           </p>
         </div>
       </div>

@@ -138,10 +138,10 @@ const Chatbot: React.FC = () => {
 
   return (
     <>
-      {/* Floating Toggle Button (Positioned above WhatsApp button) */}
+      {/* Floating Toggle Button (Positioned at bottom-6, BELOW the WhatsApp button) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-24 right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center ${
+        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center ${
           isOpen ? 'bg-gray-800 rotate-90' : 'bg-gradient-to-r from-teal-500 to-teal-600 animate-bounce-slow'
         }`}
         aria-label="Toggle Chatbot"
@@ -149,7 +149,7 @@ const Chatbot: React.FC = () => {
         {isOpen ? (
           <X className="text-white w-6 h-6" />
         ) : (
-          <Bot className="text-white w-7 h-7" />
+          <span className="text-white font-black text-xl tracking-tight leading-none" style={{ fontFamily: 'sans-serif' }}>AI</span>
         )}
         
         {/* Notification Dot if closed */}
