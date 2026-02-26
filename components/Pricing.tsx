@@ -128,7 +128,7 @@ const Pricing: React.FC = () => {
               <div className="flex-grow">
                 <div className="h-px bg-gray-100 w-full mb-2 md:mb-4"></div>
                 <ul className="space-y-1.5 md:space-y-3 mb-3 md:mb-6">
-                  {pkg.features.map((feature, i) => (
+                  {pkg.features.map((feature: string, i: number) => (
                     <li key={i} className="flex items-start gap-1 md:gap-2 text-[9px] md:text-sm text-gray-600">
                       <CheckCircle2 className={`shrink-0 mt-0.5 w-2.5 h-2.5 md:w-4 md:h-4 ${pkg.isDaily ? 'text-yellow-500' : 'text-teal-500'}`} />
                       <span className="leading-tight">{feature}</span>

@@ -14,11 +14,16 @@ const Chatbot: React.FC = () => {
     { role: 'model', text: 'আসসালামু আলাইকুম! আমি নিবেদিকা হোস্টেলের এআই অ্যাসিস্ট্যান্ট। আমি আপনাকে কীভাবে সাহায্য করতে পারি? সিট বুকিং, ভাড়া বা লোকেশন সম্পর্কে জানতে চাইতে পারেন।' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -28,51 +33,15 @@ const Chatbot: React.FC = () => {
   // System Instruction: The Brain of the Bot
   const SYSTEM_INSTRUCTION = `
     তুমি নিবেদিকা ভিআইপি হোস্টেল (Nibedika VIP Hostel) এর একজন অত্যন্ত বিনয়ী এবং দক্ষ এআই কাস্টমার সাপোর্ট এজেন্ট।
-    তোমার কাজ হলো গ্রাহকদের প্রশ্নের উত্তর সুন্দর ও সাবলীল বাংলায় দেওয়া। সর্বদা বিনয়ী ও প্রফেশনাল থাকবে।
-    
-    নিচে হোস্টেল সম্পর্কে বিস্তারিত তথ্য দেওয়া হলো। এই তথ্যের ভিত্তিতে উত্তর দিবে:
+    তোমার কাজ হলো গ্রাহকদের প্রশ্নের উত্তর খুব সংক্ষেপে, সুন্দর ও সাবলীল বাংলায় দেওয়া। উত্তরগুলো ২-৩ লাইনের মধ্যে রাখার চেষ্টা করবে।
 
-    ১. **পরিচয়**: নিবেদিকা হোস্টেল গত ৩৫ বছর ধরে ঢাকায় ছাত্র-ছাত্রী ও কর্মজীবী নারী-পুরুষের জন্য নিরাপদ আবাসন ব্যবস্থা প্রদান করছে।
-    
-    ২. **হটলাইন**: 01345-200218 (যেকোনো প্রয়োজনে এই নম্বরে কল করতে বলবে)।
+    গুরুত্বপূর্ণ তথ্য:
+    ১. হটলাইন: 01345-200218 (যেকোনো প্রয়োজনে কল করতে বলবে)।
+    ২. ব্রাঞ্চ: ফার্মগেট, পান্থপথ, গ্রীন রোড, কাঠালবাগান।
+    ৩. ভাড়া: ৪৬০০ টাকা থেকে শুরু। থাকা-খাওয়া সবসহ।
+    ৪. সুবিধা: ৩ বেলা খাবার, ওয়াইফাই, ২৪/৭ নিরাপত্তা, জেনারেটর।
 
-    ৩. **ব্রাঞ্চসমূহ**:
-       - **মেয়েদের জন্য**: 
-         (ক) ফার্মগেট (হেড অফিস): ১৭ ক, মরিচা গার্ডেন, পূর্ব রাজাবাজার। (ইনচার্জ: 01714-063178)
-         (খ) পান্থপথ: ৫৭-১/৪, পারভীন পাল (রেটিনা হসপিটালের পাশে)।
-         (গ) গ্রীন রোড: ১৫৩/১, সেঞ্চুরি আহমেদ ভিলা।
-       - **ছেলেদের জন্য**: 
-         (ক) কাঠালবাগান-১: ১১/৮/সি, ফ্রি স্কুল স্ট্রিট। (ইনচার্জ: 01714-063032)
-         (খ) পান্থপথ/ধানমন্ডি: ৫৯ ফ্রি স্কুল স্ট্রিট।
-         (গ) কাঠালবাগান-২: ৮৮ কাঞ্চন টাওয়ার।
-
-    ৪. **ভাড়া ও প্যাকেজ (থাকা+খাওয়া+সব বিলসহ)**:
-       - ৪ সিট (ইকোনমি): ৪,৬০০ টাকা/মাস।
-       - ৪ সিট (স্পেশাল): ৫,১০০ টাকা/মাস।
-       - ৩ সিট (ইকোনমি): ৫,৬০০ টাকা/মাস।
-       - ৩ সিট (স্পেশাল): ৬,১০০ টাকা/মাস।
-       - ২ সিট (ইকোনমি): ৬,৬০০ টাকা/মাস (জনপ্রিয়)।
-       - ২ সিট (স্পেশাল): ৭,১০০ টাকা/মাস।
-       - সিঙ্গেল রুম (VIP): ৮,১০০ টাকা/মাস।
-       - **ডেইলি গেস্ট**: ৩০০ টাকা/দিন (থাকা-খাওয়া সবসহ)।
-       - **অভিভাবক (মা/বোন)**: ২৫০ টাকা/দিন।
-
-    ৫. **সুবিধাসমূহ**:
-       - ৩ বেলা স্বাস্থ্যকর খাবার (মাছ/মাংস/ডিম প্রতিদিন)।
-       - হাই-স্পিড ফ্রি ওয়াইফাই।
-       - ২৪/৭ নিরাপত্তা ও সিসিটিভি।
-       - ২৪ ঘণ্টা ফিল্টার পানি ও বিদ্যুৎ (জেনারেটর আছে)।
-       - পরিষ্কার টাইলসকৃত রুম এবং এটাচড বাথরুম সুবিধা (রুম ভেদে)।
-
-    ৬. **বুকিং নিয়ম**:
-       - বুকিং এর জন্য ১ কপি ছবি ও এনআইডি/জন্মনিবন্ধন কপি লাগবে।
-       - সাধারণত চলতি মাসের ভাড়া অগ্রিম দিতে হয়। নামমাত্র সিকিউরিটি মানি লাগতে পারে।
-
-    ৭. **অন্যান্য নিয়ম**:
-       - গেট বন্ধের সময় রাত ১০:৩০ মিনিট।
-       - গেস্টরা (মা/বোন) থাকলে আগে জানাতে হবে।
-
-    যদি কেউ এমন প্রশ্ন করে যার উত্তর এখানে নেই, তবে বিনয়ের সাথে তাকে হটলাইনে (01345-200218) যোগাযোগ করতে বলবে। বানিয়ে মিথ্যা উত্তর দিবে না।
+    যদি কোনো প্রশ্নের উত্তর জানা না থাকে, তবে বিনীতভাবে হটলাইনে যোগাযোগ করতে বলবে। মিথ্যা তথ্য দিবে না।
   `;
 
   const handleSend = async () => {
@@ -84,21 +53,21 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Check for API Key explicitly
-      if (!process.env.API_KEY) {
+      // Use VITE_GEMINI_API_KEY for client-side access
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+      if (!apiKey) {
          setMessages(prev => [...prev, { 
           role: 'model', 
-          text: "⚠️ সিস্টেম এরর: API Key কনফিগার করা হয়নি। অনুগ্রহ করে Netlify সেটিংস চেক করুন এবং পুনরায় Deploy করুন।" 
+          text: "⚠️ সিস্টেম এরর: API Key কনফিগার করা হয়নি। অনুগ্রহ করে Netlify Environment Variables-এ VITE_GEMINI_API_KEY যুক্ত করুন।" 
         }]);
         setIsLoading(false);
         return;
       }
 
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       
       // Prepare chat history for the API
-      // We map our local state to the API's expected format
-      // Filter out the initial greeting message if it's the first one, as Gemini expects conversation to start with 'user'
       const historyForApi = messages
         .filter((_, index) => index !== 0) // Remove the first message (initial greeting)
         .map(msg => ({
@@ -107,11 +76,14 @@ const Chatbot: React.FC = () => {
         }));
 
       // Add the new user message
-      historyForApi.push({ role: 'user', parts: [{ text: userMessage }] });
+      // historyForApi.push({ role: 'user', parts: [{ text: userMessage }] }); // Not needed for generateContent if using contents
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: historyForApi,
+        model: 'gemini-2.5-flash-latest',
+        contents: [
+          ...historyForApi,
+          { role: 'user', parts: [{ text: userMessage }] }
+        ],
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
         }
@@ -158,7 +130,7 @@ const Chatbot: React.FC = () => {
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 space-y-3 md:space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 space-y-3 md:space-y-4">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -185,7 +157,6 @@ const Chatbot: React.FC = () => {
             </div>
           </div>
         )}
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Area */}

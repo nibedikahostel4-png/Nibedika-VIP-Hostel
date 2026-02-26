@@ -1,23 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Loader2, X, Maximize2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Maximize2 } from 'lucide-react';
 
 const Gallery: React.FC = () => {
-  const [images, setImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  // ==========================================
-  // অটোমেটিক গ্যালারি সেটআপ (ডেভেলপারদের জন্য)
-  // ==========================================
-  // যদি আপনি Google Drive ফোল্ডার থেকে অটোমেটিক ছবি আনতে চান:
-  // ১. Google Apps Script সেটআপ করুন এবং Web App URL তৈরি করুন।
-  // ২. নিচের 'APPS_SCRIPT_URL' ভেরিয়েবলে সেই URL টি বসান।
-  
-  const APPS_SCRIPT_URL = ""; 
-  
-  // ফলবুক ইমেজ: যতক্ষণ না স্ক্রিপ্ট সেট করা হচ্ছে, ততক্ষণ এই ছবিগুলো দেখাবে।
-  const MANUAL_IMAGES = [
-    // Previous 12 images
+  const images = [
     "https://drive.google.com/thumbnail?id=1jZSPOIiB6-WnpndR3JuBKjERKTx0ebZl&sz=w1000",
     "https://drive.google.com/thumbnail?id=1O0FcLtv-60SzrhmArzO4kHCCeEQ6BXPD&sz=w1000",
     "https://drive.google.com/thumbnail?id=1-olRuQ_mOShxydZpuRX9BsqJdG6oVsKJ&sz=w1000",
@@ -30,7 +17,6 @@ const Gallery: React.FC = () => {
     "https://drive.google.com/thumbnail?id=1lxq78JAmcwFSNei9Lq8YKvhWAhdxCr91&sz=w1000",
     "https://drive.google.com/thumbnail?id=1mQCkhDFA_ZIobuCb-a6FENOIlui7YDlx&sz=w1000",
     "https://drive.google.com/thumbnail?id=1OaLYB_-01C4Da_8XydaW7dwJlY6_nhum&sz=w1000",
-    // New 10 images
     "https://drive.google.com/thumbnail?id=1jmRCb0TB_7gmTaNburdF3q3aeQTfL52m&sz=w1000",
     "https://drive.google.com/thumbnail?id=1HEf3-d0_DE2y2mMTSloMLt9ajRIbyFVq&sz=w1000",
     "https://drive.google.com/thumbnail?id=1uohqpwKO0ElUG_mjIsUzOfISbPdmoEr3&sz=w1000",
@@ -43,100 +29,73 @@ const Gallery: React.FC = () => {
     "https://drive.google.com/thumbnail?id=1c59YRW6ppjOtgOifjH_UtHeeeni0Z7T4&sz=w1000"
   ];
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      // যদি URL সেট না থাকে, ম্যানুয়াল ইমেজ দেখান
-      if (!APPS_SCRIPT_URL) {
-        setImages(MANUAL_IMAGES);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(APPS_SCRIPT_URL);
-        const data = await response.json();
-        
-        if (Array.isArray(data) && data.length > 0) {
-           // Google Drive Thumbnail Link Format
-           const formattedImages = data.map((id: string) => 
-            `https://drive.google.com/thumbnail?id=${id}&sz=w1000`
-          );
-          setImages(formattedImages);
-        } else {
-           setImages(MANUAL_IMAGES);
-        }
-      } catch (error) {
-        console.error("Error fetching images:", error);
-        setImages(MANUAL_IMAGES);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchImages();
-  }, []);
-
   return (
-    <section id="gallery" className="py-8 md:py-16 bg-white scroll-mt-20 md:scroll-mt-28 border-b border-gray-200 relative">
-      {/* Lightbox Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <button 
-            className="absolute top-4 right-4 md:top-8 md:right-8 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all"
-            onClick={() => setSelectedImage(null)}
-          >
-            <X size={24} />
-          </button>
-          <img 
-            src={selectedImage} 
-            alt="Full View" 
-            className="max-w-full max-h-[90vh] object-contain rounded-md shadow-lg"
-            onClick={(e) => e.stopPropagation()} 
-          />
-        </div>
-      )}
-
+    <section id="gallery" className="py-12 md:py-24 bg-white scroll-mt-20 md:scroll-mt-28">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-6 md:mb-10">
-          <h2 className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">হোস্টেলের পরিবেশ</h2>
-          <div className="w-12 md:w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
-          <p className="mt-2 md:mt-4 text-gray-600 max-w-2xl mx-auto font-medium text-[10px] md:text-sm">
-            আমাদের পরিষ্কার-পরিচ্ছন্ন রুম, ডাইনিং এবং মনোরম পরিবেশের কিছু চিত্র।
+        {/* Header */}
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4">
+            আমাদের গ্যালারি
+          </h2>
+          <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
+            নিবেদিকা ভিআইপি হোস্টেলের পরিবেশ, রুম, ডাইনিং এবং অন্যান্য সুবিধার কিছু স্থিরচিত্র।
           </p>
+          <div className="w-16 md:w-24 h-1 bg-teal-500 mx-auto rounded-full mt-6"></div>
         </div>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-10 md:py-20 bg-gray-50 rounded-md">
-            <Loader2 className="w-8 h-8 md:w-10 md:h-10 text-teal-600 animate-spin mb-4" />
-            <p className="text-gray-500 font-medium text-xs md:text-sm">গ্যালারি লোড হচ্ছে...</p>
-          </div>
-        ) : (
-          /* Masonry Layout for Original Ratio - Mobile: 3 columns, Desktop: 4 columns */
-          <div className="columns-3 md:columns-4 gap-1.5 md:gap-4 max-w-7xl mx-auto">
-            {images.map((src, index) => (
-              <div 
-                key={index} 
-                className="break-inside-avoid mb-1.5 md:mb-4 group relative overflow-hidden rounded-md bg-gray-100 cursor-pointer shadow-sm hover:shadow transition-shadow border border-gray-200"
-                onClick={() => setSelectedImage(src)}
-              >
-                <img
-                  src={src}
-                  alt={`Gallery ${index + 1}`}
-                  /* w-full h-auto keeps original aspect ratio */
-                  className="w-full h-auto object-cover block"
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <div className="bg-white/90 p-1.5 md:p-2 rounded-full">
-                     <Maximize2 size={14} className="text-gray-900 md:w-4 md:h-4" />
-                  </div>
+        {/* Masonry-like Grid */}
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 space-y-3 md:space-y-4">
+          {images.map((imgUrl, index) => (
+            <div 
+              key={index} 
+              className="break-inside-avoid relative group overflow-hidden rounded-xl bg-gray-100 cursor-pointer"
+              onClick={() => setSelectedImage(imgUrl)}
+            >
+              <img
+                src={imgUrl}
+                alt={`Gallery Image ${index + 1}`}
+                className="w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                referrerPolicy="no-referrer"
+              />
+              
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-xl">
+                <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <Maximize2 className="w-6 h-6 text-white" />
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Lightbox Modal */}
+        {selectedImage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 md:p-8 backdrop-blur-sm">
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors z-50"
+              aria-label="Close lightbox"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Image Container */}
+            <div className="relative w-full max-w-5xl max-h-[90vh] flex items-center justify-center">
+              <img
+                src={selectedImage}
+                alt="Enlarged view"
+                className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            
+            {/* Click outside to close */}
+            <div 
+              className="absolute inset-0 -z-10" 
+              onClick={() => setSelectedImage(null)}
+            ></div>
           </div>
         )}
       </div>
