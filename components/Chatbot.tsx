@@ -32,16 +32,16 @@ const Chatbot: React.FC = () => {
 
   // System Instruction: The Brain of the Bot
   const SYSTEM_INSTRUCTION = `
-    তুমি নিবেদিকা ভিআইপি হোস্টেল (Nibedika VIP Hostel) এর একজন অত্যন্ত বিনয়ী এবং দক্ষ এআই কাস্টমার সাপোর্ট এজেন্ট।
-    তোমার কাজ হলো গ্রাহকদের প্রশ্নের উত্তর খুব সংক্ষেপে, সুন্দর ও সাবলীল বাংলায় দেওয়া। উত্তরগুলো ২-৩ লাইনের মধ্যে রাখার চেষ্টা করবে।
-
-    গুরুত্বপূর্ণ তথ্য:
-    ১. হটলাইন: 01345-200218 (যেকোনো প্রয়োজনে কল করতে বলবে)।
-    ২. ব্রাঞ্চ: ফার্মগেট, পান্থপথ, গ্রীন রোড, কাঠালবাগান।
-    ৩. ভাড়া: ৪৬০০ টাকা থেকে শুরু। থাকা-খাওয়া সবসহ।
-    ৪. সুবিধা: ৩ বেলা খাবার, ওয়াইফাই, ২৪/৭ নিরাপত্তা, জেনারেটর।
-
-    যদি কোনো প্রশ্নের উত্তর জানা না থাকে, তবে বিনীতভাবে হটলাইনে যোগাযোগ করতে বলবে। মিথ্যা তথ্য দিবে না।
+    তুমি নিবেদিকা হোস্টেলের এআই অ্যাসিস্ট্যান্ট।
+    তোমার কাজ: গ্রাহকের প্রশ্নের উত্তর সংক্ষেপে (১-২ বাক্যে) ও সুন্দর বাংলায় দেওয়া।
+    
+    তথ্য:
+    - হটলাইন: 01345-200218
+    - ব্রাঞ্চ: ফার্মগেট, পান্থপথ, গ্রীন রোড, কাঠালবাগান।
+    - ভাড়া: ৪৬০০-৮১০০ টাকা (থাকা-খাওয়া সবসহ)।
+    - সুবিধা: ৩ বেলা খাবার, ওয়াইফাই, ২৪/৭ নিরাপত্তা।
+    
+    অজানা প্রশ্নের উত্তরে হটলাইনে কল করতে বলো।
   `;
 
   const handleSend = async () => {
@@ -54,12 +54,13 @@ const Chatbot: React.FC = () => {
 
     try {
       // Use VITE_GEMINI_API_KEY for client-side access
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      // Also check VITE_API_KEY as a fallback
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_API_KEY;
 
       if (!apiKey) {
          setMessages(prev => [...prev, { 
           role: 'model', 
-          text: "⚠️ সিস্টেম এরর: API Key কনফিগার করা হয়নি। অনুগ্রহ করে Netlify Environment Variables-এ VITE_GEMINI_API_KEY যুক্ত করুন।" 
+          text: "⚠️ API Key পাওয়া যায়নি। অনুগ্রহ করে Netlify Environment Variables-এ 'VITE_GEMINI_API_KEY' নামে আপনার Gemini API Key টি যুক্ত করুন এবং সাইটটি Re-deploy করুন।" 
         }]);
         setIsLoading(false);
         return;
@@ -67,19 +68,15 @@ const Chatbot: React.FC = () => {
 
       const ai = new GoogleGenAI({ apiKey });
       
-      // Prepare chat history for the API
       const historyForApi = messages
-        .filter((_, index) => index !== 0) // Remove the first message (initial greeting)
+        .filter((_, index) => index !== 0)
         .map(msg => ({
           role: msg.role === 'user' ? 'user' : 'model',
           parts: [{ text: msg.text }]
         }));
 
-      // Add the new user message
-      // historyForApi.push({ role: 'user', parts: [{ text: userMessage }] }); // Not needed for generateContent if using contents
-
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-latest',
+        model: 'gemini-2.0-flash-exp',
         contents: [
           ...historyForApi,
           { role: 'user', parts: [{ text: userMessage }] }
@@ -89,15 +86,24 @@ const Chatbot: React.FC = () => {
         }
       });
 
-      const botResponseText = response.text || "দুঃখিত, আমি এই মুহূর্তে উত্তর দিতে পারছি না। দয়া করে হটলাইনে কল করুন।";
+      const botResponseText = response.text || "দুঃখিত, আমি উত্তর দিতে পারছি না। হটলাইনে কল করুন।";
 
       setMessages(prev => [...prev, { role: 'model', text: botResponseText }]);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Chatbot Error:", error);
+      
+      let errorMessage = "দুঃখিত, টেকনিক্যাল সমস্যার কারণে আমি উত্তর দিতে পারছি না।";
+      
+      if (error.message?.includes("API key")) {
+          errorMessage = "⚠️ API Key সঠিক নয় বা মেয়াদোত্তীর্ণ।";
+      } else if (error.message?.includes("404")) {
+          errorMessage = "⚠️ মডেল খুঁজে পাওয়া যাচ্ছে না (404)।";
+      }
+
       setMessages(prev => [...prev, { 
         role: 'model', 
-        text: "দুঃখিত, টেকনিক্যাল সমস্যার কারণে আমি উত্তর দিতে পারছি না। দয়া করে সরাসরি আমাদের হটলাইনে কল করুন: 01345-200218" 
+        text: `${errorMessage} দয়া করে হটলাইনে কল করুন: 01345-200218` 
       }]);
     } finally {
       setIsLoading(false);
