@@ -77,11 +77,11 @@ const Gallery: React.FC = () => {
   }, []);
 
   return (
-    <section id="gallery" className="py-16 md:py-24 bg-white scroll-mt-28 relative">
+    <section id="gallery" className="py-8 md:py-16 bg-white scroll-mt-20 md:scroll-mt-28 border-b border-gray-200 relative">
       {/* Lightbox Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
           <button 
@@ -93,46 +93,46 @@ const Gallery: React.FC = () => {
           <img 
             src={selectedImage} 
             alt="Full View" 
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+            className="max-w-full max-h-[90vh] object-contain rounded-md shadow-lg"
             onClick={(e) => e.stopPropagation()} 
           />
         </div>
       )}
 
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3">হোস্টেলের পরিবেশ</h2>
-          <div className="w-16 md:w-24 h-1 bg-[#fcd34d] mx-auto rounded-full"></div>
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto font-medium">
+        <div className="text-center mb-6 md:mb-10">
+          <h2 className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">হোস্টেলের পরিবেশ</h2>
+          <div className="w-12 md:w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
+          <p className="mt-2 md:mt-4 text-gray-600 max-w-2xl mx-auto font-medium text-[10px] md:text-sm">
             আমাদের পরিষ্কার-পরিচ্ছন্ন রুম, ডাইনিং এবং মনোরম পরিবেশের কিছু চিত্র।
           </p>
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-2xl">
-            <Loader2 className="w-10 h-10 text-teal-600 animate-spin mb-4" />
-            <p className="text-gray-500 font-medium">গ্যালারি লোড হচ্ছে...</p>
+          <div className="flex flex-col items-center justify-center py-10 md:py-20 bg-gray-50 rounded-md">
+            <Loader2 className="w-8 h-8 md:w-10 md:h-10 text-teal-600 animate-spin mb-4" />
+            <p className="text-gray-500 font-medium text-xs md:text-sm">গ্যালারি লোড হচ্ছে...</p>
           </div>
         ) : (
           /* Masonry Layout for Original Ratio - Mobile: 3 columns, Desktop: 4 columns */
-          <div className="columns-3 md:columns-4 gap-2 md:gap-4">
+          <div className="columns-3 md:columns-4 gap-1.5 md:gap-4 max-w-7xl mx-auto">
             {images.map((src, index) => (
               <div 
                 key={index} 
-                className="break-inside-avoid mb-2 md:mb-4 group relative overflow-hidden rounded-xl bg-gray-100 cursor-pointer shadow-sm hover:shadow-lg transition-all border border-gray-100"
+                className="break-inside-avoid mb-1.5 md:mb-4 group relative overflow-hidden rounded-md bg-gray-100 cursor-pointer shadow-sm hover:shadow transition-shadow border border-gray-200"
                 onClick={() => setSelectedImage(src)}
               >
                 <img
                   src={src}
                   alt={`Gallery ${index + 1}`}
                   /* w-full h-auto keeps original aspect ratio */
-                  className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 block"
+                  className="w-full h-auto object-cover block"
                   loading="lazy"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <div className="bg-white/90 p-2 rounded-full transform scale-75 group-hover:scale-100 transition-all">
-                     <Maximize2 size={20} className="text-gray-900" />
+                  <div className="bg-white/90 p-1.5 md:p-2 rounded-full">
+                     <Maximize2 size={14} className="text-gray-900 md:w-4 md:h-4" />
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Building2, CalendarCheck, MapPin, X, Maximize2 } from 'lucide-react';
+import { Phone, Building2, CalendarCheck, X, Maximize2 } from 'lucide-react';
 
 interface Branch {
   name: string;
@@ -14,40 +14,35 @@ const BranchCard: React.FC<{ branch: Branch; onImageClick: (img: string) => void
   const waLink = `https://wa.me/8801345200218?text=${encodeURIComponent(`আসসালামু আলাইকুম, আমি ${branch.name} -এ সিট বুকিং দিতে চাই।`)}`;
 
   return (
-    <div className={`bg-white rounded-xl p-3 md:p-4 border shadow-sm hover:shadow-md transition-all flex flex-row items-center gap-3 md:gap-5 ${branch.isHeadOffice ? 'border-teal-500 ring-2 ring-teal-500/20 relative overflow-hidden' : 'border-gray-200'}`}>
+    <div className={`bg-white rounded-md md:rounded-lg p-2 md:p-4 border shadow-sm hover:shadow transition-all flex flex-row items-center gap-2 md:gap-5 ${branch.isHeadOffice ? 'border-teal-500 relative overflow-hidden' : 'border-gray-200'}`}>
       
-      {/* Decorative Background for Head Office */}
-      {branch.isHeadOffice && (
-         <div className="absolute top-0 right-0 w-16 h-16 md:w-24 md:h-24 bg-teal-50 rounded-bl-full -mr-8 -mt-8 md:-mr-12 md:-mt-12 z-0 pointer-events-none"></div>
-      )}
-
       {/* Left: Text Information & Buttons */}
       <div className="flex-1 flex flex-col justify-between min-w-0 relative z-10 h-full py-1">
         <div>
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1.5">
-              <h4 className="text-sm md:text-lg font-bold text-gray-800 leading-tight">{branch.name}</h4>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1 md:mb-1.5">
+              <h4 className="text-xs md:text-lg font-bold text-gray-800 leading-tight">{branch.name}</h4>
               {branch.isHeadOffice && (
-                  <span className="inline-flex items-center gap-1 bg-gradient-to-r from-teal-600 to-teal-800 text-white text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full shadow-lg ring-1 ring-teal-300 animate-[pulse_3s_ease-in-out_infinite]">
-                      <Building2 className="w-3 h-3 md:w-3.5 md:h-3.5 text-yellow-300" />
+                  <span className="inline-flex items-center gap-1 bg-teal-600 text-white text-[9px] md:text-xs font-bold px-1.5 py-0.5 rounded shadow-sm">
+                      <Building2 className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-yellow-300" />
                       হেড অফিস
                   </span>
               )}
           </div>
-          <p className="text-gray-600 leading-relaxed text-[11px] md:text-sm font-medium whitespace-pre-line break-words mb-2 md:mb-3 line-clamp-3 md:line-clamp-none">
+          <p className="text-gray-600 leading-relaxed text-[10px] md:text-sm font-medium whitespace-pre-line break-words mb-2 md:mb-3 line-clamp-3 md:line-clamp-none">
             {branch.address}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2 mt-auto">
+        <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mt-auto">
           {/* Book Now Button (Yellow) */}
           <a 
             href={waLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-[#fcd34d] hover:bg-[#fbbf24] text-gray-900 text-[10px] md:text-sm font-bold px-2.5 py-1.5 md:px-4 md:py-2 rounded-full shadow-sm transition-transform active:scale-95 border border-yellow-400"
+            className="inline-flex items-center gap-1 md:gap-1.5 bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-[9px] md:text-sm font-bold px-2 py-1 md:px-4 md:py-2 rounded-md shadow-sm transition-colors border border-yellow-400"
           >
-            <CalendarCheck className="w-3 h-3 md:w-4 md:h-4" />
+            <CalendarCheck className="w-2.5 h-2.5 md:w-4 md:h-4" />
             Book Now
           </a>
 
@@ -56,23 +51,23 @@ const BranchCard: React.FC<{ branch: Branch; onImageClick: (img: string) => void
             href={branch.mapLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 md:gap-2 bg-white hover:bg-gray-50 border border-gray-200 hover:border-blue-200 text-gray-700 px-2.5 py-1.5 md:px-4 md:py-2 rounded-full shadow-sm hover:shadow-md transition-all active:scale-95 group"
+            className="inline-flex items-center gap-1 md:gap-2 bg-white hover:bg-gray-50 border border-gray-200 hover:border-blue-200 text-gray-700 px-2 py-1 md:px-4 md:py-2 rounded-md shadow-sm hover:shadow transition-colors group"
             title="গুগল ম্যাপে দেখুন"
           >
             <img 
               src="https://upload.wikimedia.org/wikipedia/commons/a/aa/Google_Maps_icon_%282020%29.svg" 
               alt="Google Maps" 
-              className="w-3 h-3 md:w-4 md:h-4 group-hover:scale-110 transition-transform"
+              className="w-2.5 h-2.5 md:w-4 md:h-4 group-hover:scale-110 transition-transform"
             />
-            <span className="text-[10px] md:text-sm font-bold group-hover:text-blue-600">Location</span>
+            <span className="text-[9px] md:text-sm font-bold group-hover:text-blue-600">Location</span>
           </a>
         </div>
       </div>
 
       {/* Right: Image Only */}
-      <div className="w-24 md:w-40 shrink-0 self-center relative z-10">
+      <div className="w-20 md:w-40 shrink-0 self-center relative z-10">
         <div 
-          className="aspect-[3/4] overflow-hidden rounded-lg border border-gray-100 shadow-sm w-full group cursor-zoom-in relative"
+          className="aspect-[3/4] overflow-hidden rounded-md border border-gray-100 shadow-sm w-full group cursor-zoom-in relative"
           onClick={() => onImageClick(branch.image)}
         >
            <img 
@@ -83,8 +78,8 @@ const BranchCard: React.FC<{ branch: Branch; onImageClick: (img: string) => void
            />
            {/* Zoom Hint Overlay */}
            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-              <div className="bg-white/90 p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm scale-75 group-hover:scale-100">
-                <Maximize2 size={14} className="text-gray-700" />
+              <div className="bg-white/90 p-1 md:p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm scale-75 group-hover:scale-100">
+                <Maximize2 size={12} className="text-gray-700 md:w-[14px] md:h-[14px]" />
               </div>
            </div>
         </div>
@@ -140,11 +135,11 @@ const Branches: React.FC = () => {
   ];
 
   return (
-    <section id="branches" className="py-16 bg-white scroll-mt-28">
+    <section id="branches" className="py-8 md:py-16 bg-white scroll-mt-20 md:scroll-mt-28 border-b border-gray-200">
       {/* Lightbox Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
           <button 
@@ -156,7 +151,7 @@ const Branches: React.FC = () => {
           <img 
             src={selectedImage} 
             alt="Full View" 
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+            className="max-w-full max-h-[90vh] object-contain rounded-md shadow-lg"
             referrerPolicy="no-referrer"
             onClick={(e) => e.stopPropagation()} // Allow clicking image without closing
           />
@@ -164,46 +159,46 @@ const Branches: React.FC = () => {
       )}
 
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3">আমাদের ব্রাঞ্চসমূহ</h2>
-          <div className="w-16 md:w-24 h-1 bg-[#fcd34d] mx-auto rounded-full"></div>
+        <div className="text-center mb-6 md:mb-10">
+          <h2 className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">আমাদের ব্রাঞ্চসমূহ</h2>
+          <div className="w-12 md:w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
           
-          <p className="mt-3 text-gray-600 text-sm md:text-lg font-medium max-w-2xl mx-auto">
+          <p className="mt-2 md:mt-3 text-gray-600 text-[10px] md:text-sm font-medium max-w-2xl mx-auto">
             ঢাকার যাতায়াত সুবিধাসম্পন্ন প্রাইম লোকেশনগুলোতে আমাদের সুসজ্জিত ব্রাঞ্চসমূহ।
           </p>
 
-          <div className="mt-5 flex justify-center">
+          <div className="mt-4 md:mt-5 flex justify-center">
              <a 
                 href="tel:01332719549" 
-                className="inline-flex items-center gap-2 bg-[#fcd34d] text-gray-900 px-5 py-2.5 rounded-full font-bold shadow-md hover:bg-[#fbbf24] transition-all hover:scale-105 border border-yellow-400 text-sm md:text-base"
+                className="inline-flex items-center gap-1.5 md:gap-2 bg-yellow-400 text-gray-900 px-4 py-2 md:px-5 md:py-2.5 rounded-md font-bold shadow-sm hover:bg-yellow-500 transition-colors border border-yellow-400 text-xs md:text-sm"
               >
-                <Phone size={18} className="fill-current" />
+                <Phone size={14} className="fill-current md:w-[18px] md:h-[18px]" />
                 স্টাফ: 01332-719549
              </a>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-12">
+        <div className="max-w-4xl mx-auto space-y-8 md:space-y-12">
           
           {/* Female Branches Section */}
           <div className="relative">
             {/* Header Badge */}
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-6 py-1.5 rounded-full font-bold shadow-md z-10 whitespace-nowrap text-xs md:text-sm">
+            <div className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 bg-teal-600 text-white px-4 py-1 md:px-6 md:py-1.5 rounded-md font-bold shadow-sm z-10 whitespace-nowrap text-[10px] md:text-sm">
               মহিলা হোস্টেল
             </div>
             
-            <div className="border border-teal-100 bg-teal-50/20 rounded-2xl p-3 md:p-6 pt-8">
-              <div className="flex justify-center mb-5 mt-1">
+            <div className="border border-teal-100 bg-teal-50/20 rounded-md md:rounded-lg p-2 md:p-6 pt-6 md:pt-8">
+              <div className="flex justify-center mb-4 md:mb-5 mt-1">
                  <a 
                     href="tel:01714063178" 
-                    className="inline-flex items-center gap-2 bg-white text-teal-700 px-3 py-1 md:px-4 md:py-1.5 rounded-full font-bold shadow-sm border border-teal-200 hover:bg-teal-50 transition-colors text-xs md:text-sm"
+                    className="inline-flex items-center gap-1.5 md:gap-2 bg-white text-teal-700 px-3 py-1 md:px-4 md:py-1.5 rounded-md font-bold shadow-sm border border-teal-200 hover:bg-teal-50 transition-colors text-[10px] md:text-sm"
                   >
-                    <Phone size={14} className="fill-current" />
+                    <Phone size={12} className="fill-current md:w-[14px] md:h-[14px]" />
                     ইনচার্জ: 01714-063178
                  </a>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 md:gap-5">
+              <div className="grid grid-cols-1 gap-2 md:gap-5">
                 {femaleBranches.map((branch, index) => (
                   <BranchCard key={index} branch={branch} onImageClick={setSelectedImage} />
                 ))}
@@ -214,22 +209,22 @@ const Branches: React.FC = () => {
           {/* Male Branches Section */}
           <div className="relative">
             {/* Header Badge */}
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-6 py-1.5 rounded-full font-bold shadow-md z-10 whitespace-nowrap text-xs md:text-sm">
+            <div className="absolute -top-3 md:-top-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-1 md:px-6 md:py-1.5 rounded-md font-bold shadow-sm z-10 whitespace-nowrap text-[10px] md:text-sm">
               পুরুষ হোস্টেল
             </div>
 
-            <div className="border border-gray-200 bg-gray-50 rounded-2xl p-3 md:p-6 pt-8">
-              <div className="flex justify-center mb-5 mt-1">
+            <div className="border border-gray-200 bg-gray-50 rounded-md md:rounded-lg p-2 md:p-6 pt-6 md:pt-8">
+              <div className="flex justify-center mb-4 md:mb-5 mt-1">
                  <a 
                     href="tel:01714063032" 
-                    className="inline-flex items-center gap-2 bg-white text-gray-800 px-3 py-1 md:px-4 md:py-1.5 rounded-full font-bold shadow-sm border border-gray-200 hover:bg-gray-100 transition-colors text-xs md:text-sm"
+                    className="inline-flex items-center gap-1.5 md:gap-2 bg-white text-gray-800 px-3 py-1 md:px-4 md:py-1.5 rounded-md font-bold shadow-sm border border-gray-200 hover:bg-gray-100 transition-colors text-[10px] md:text-sm"
                   >
-                    <Phone size={14} className="fill-current" />
+                    <Phone size={12} className="fill-current md:w-[14px] md:h-[14px]" />
                     ইনচার্জ: 01714-063032
                  </a>
               </div>
 
-              <div className="grid grid-cols-1 gap-3 md:gap-5">
+              <div className="grid grid-cols-1 gap-2 md:gap-5">
                 {maleBranches.map((branch, index) => (
                   <BranchCard key={index} branch={branch} onImageClick={setSelectedImage} />
                 ))}

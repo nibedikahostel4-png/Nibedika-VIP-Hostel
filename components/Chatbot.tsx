@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import { MessageSquare, Send, X, Bot, Loader2, Minimize2 } from 'lucide-react';
+import { Send, Bot, Loader2 } from 'lucide-react';
 
 // Message Type Definition
 type Message = {
@@ -9,7 +9,6 @@ type Message = {
 };
 
 const Chatbot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', text: 'আসসালামু আলাইকুম! আমি নিবেদিকা হোস্টেলের এআই অ্যাসিস্ট্যান্ট। আমি আপনাকে কীভাবে সাহায্য করতে পারি? সিট বুকিং, ভাড়া বা লোকেশন সম্পর্কে জানতে চাইতে পারেন।' }
@@ -24,7 +23,7 @@ const Chatbot: React.FC = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isOpen]);
+  }, [messages]);
 
   // System Instruction: The Brain of the Bot
   const SYSTEM_INSTRUCTION = `
@@ -99,10 +98,13 @@ const Chatbot: React.FC = () => {
       
       // Prepare chat history for the API
       // We map our local state to the API's expected format
-      const historyForApi = messages.map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.text }]
-      }));
+      // Filter out the initial greeting message if it's the first one, as Gemini expects conversation to start with 'user'
+      const historyForApi = messages
+        .filter((_, index) => index !== 0) // Remove the first message (initial greeting)
+        .map(msg => ({
+          role: msg.role === 'user' ? 'user' : 'model',
+          parts: [{ text: msg.text }]
+        }));
 
       // Add the new user message
       historyForApi.push({ role: 'user', parts: [{ text: userMessage }] });
@@ -137,118 +139,84 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <>
-      {/* Floating Toggle Button (Positioned at bottom-6, BELOW the WhatsApp button) */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center ${
-          isOpen ? 'bg-gray-800 rotate-90' : 'bg-gradient-to-r from-teal-500 to-teal-600 animate-bounce-slow'
-        }`}
-        aria-label="Toggle Chatbot"
-      >
-        {isOpen ? (
-          <X className="text-white w-6 h-6" />
-        ) : (
-          <span className="text-white font-black text-xl tracking-tight leading-none" style={{ fontFamily: 'sans-serif' }}>AI</span>
-        )}
-        
-        {/* Notification Dot if closed */}
-        {!isOpen && messages.length === 1 && (
-           <span className="absolute -top-1 -right-1 flex h-4 w-4">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-[10px] text-white justify-center items-center">1</span>
-          </span>
-        )}
-      </button>
-
-      {/* Chat Window */}
-      {isOpen && (
-        <div className="fixed bottom-40 right-4 md:right-6 w-[90vw] md:w-96 h-[450px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200 overflow-hidden animate-in slide-in-from-bottom-10 fade-in duration-300">
-          
-          {/* Header */}
-          <div className="bg-gradient-to-r from-teal-600 to-teal-700 p-4 flex items-center justify-between text-white shrink-0">
-            <div className="flex items-center gap-2">
-              <div className="bg-white/20 p-1.5 rounded-full">
-                <Bot size={20} />
-              </div>
-              <div>
-                <h3 className="font-bold text-sm">নিবেদিকা AI সাপোর্ট</h3>
-                <span className="flex items-center gap-1 text-[10px] text-teal-100">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-                  Active Now
-                </span>
-              </div>
-            </div>
-            <button 
-              onClick={() => setIsOpen(false)} 
-              className="hover:bg-white/20 p-1 rounded-full transition-colors"
-            >
-              <Minimize2 size={18} />
-            </button>
+    <div className="w-full bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden h-[450px] md:h-[600px] flex flex-col">
+      
+      {/* Header */}
+      <div className="bg-gradient-to-r from-teal-600 to-teal-700 p-3 md:p-4 flex items-center justify-between text-white shrink-0">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="bg-white/20 p-1.5 md:p-2 rounded-full">
+            <Bot size={20} className="md:w-6 md:h-6" />
           </div>
-
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[85%] p-3 rounded-2xl text-sm leading-relaxed shadow-sm ${
-                    msg.role === 'user'
-                      ? 'bg-teal-600 text-white rounded-br-none'
-                      : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none'
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-            
-            {/* Loading Indicator */}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-gray-200 p-3 rounded-2xl rounded-bl-none shadow-sm flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 text-teal-600 animate-spin" />
-                  <span className="text-xs text-gray-500">লিখছে...</span>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Area */}
-          <div className="p-3 bg-white border-t border-gray-100 shrink-0">
-            <div className="flex items-center gap-2 bg-gray-100 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500/50 transition-all">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="আপনার প্রশ্ন লিখুন..."
-                className="flex-1 bg-transparent text-sm outline-none text-gray-700 placeholder:text-gray-400"
-                disabled={isLoading}
-              />
-              <button
-                onClick={handleSend}
-                disabled={!input.trim() || isLoading}
-                className={`p-2 rounded-full transition-colors ${
-                  input.trim() && !isLoading 
-                    ? 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm' 
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
-              >
-                <Send size={16} />
-              </button>
-            </div>
-            <div className="text-center mt-1">
-              <span className="text-[9px] text-gray-400">Powered by Gemini AI</span>
-            </div>
+          <div>
+            <h3 className="font-bold text-base md:text-lg">নিবেদিকা AI সাপোর্ট</h3>
+            <span className="flex items-center gap-1 text-[10px] md:text-xs text-teal-100">
+              <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full animate-pulse"></span>
+              Active Now
+            </span>
           </div>
         </div>
-      )}
-    </>
+      </div>
+
+      {/* Messages Area */}
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-50 space-y-3 md:space-y-4">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`max-w-[85%] p-3 md:p-4 rounded-2xl text-xs md:text-base leading-relaxed shadow-sm ${
+                msg.role === 'user'
+                  ? 'bg-teal-600 text-white rounded-br-none'
+                  : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none'
+              }`}
+            >
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        
+        {/* Loading Indicator */}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-white border border-gray-200 p-3 md:p-4 rounded-2xl rounded-bl-none shadow-sm flex items-center gap-2">
+              <Loader2 className="w-4 h-4 md:w-5 md:h-5 text-teal-600 animate-spin" />
+              <span className="text-xs md:text-sm text-gray-500">লিখছে...</span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Input Area */}
+      <div className="p-3 md:p-4 bg-white border-t border-gray-100 shrink-0">
+        <div className="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 md:px-4 md:py-3 focus-within:ring-2 focus-within:ring-teal-500/50 transition-all">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="আপনার প্রশ্ন লিখুন..."
+            className="flex-1 bg-transparent text-sm md:text-base outline-none text-gray-700 placeholder:text-gray-400"
+            disabled={isLoading}
+          />
+          <button
+            onClick={handleSend}
+            disabled={!input.trim() || isLoading}
+            className={`p-2 md:p-2.5 rounded-full transition-colors ${
+              input.trim() && !isLoading 
+                ? 'bg-teal-600 text-white hover:bg-teal-700 shadow-sm' 
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            <Send size={16} className="md:w-5 md:h-5" />
+          </button>
+        </div>
+        <div className="text-center mt-2">
+          <span className="text-[10px] text-gray-400">Powered by Gemini AI</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

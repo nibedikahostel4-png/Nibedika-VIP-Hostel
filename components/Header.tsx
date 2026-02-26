@@ -65,6 +65,7 @@ const Header: React.FC = () => {
     { name: 'ব্রাঞ্চসমূহ', href: '#branches' },
     { name: 'গ্যালারি', href: '#gallery' },
     { name: 'ভাড়া ও খরচ', href: '#pricing' },
+    { name: 'ভার্চুয়াল অ্যাসিস্ট্যান্ট', href: '#faq' },
     { name: 'যোগাযোগ', href: '#footer' },
   ];
 
@@ -76,28 +77,28 @@ const Header: React.FC = () => {
       <header 
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled 
-            ? 'bg-white/95 backdrop-blur-sm shadow-md py-0' 
-            : 'bg-transparent shadow-none py-2'
+            ? 'bg-white shadow-sm py-0' 
+            : 'bg-white/90 shadow-sm py-1 md:py-2'
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-14 md:h-20">
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <a href="#home" onClick={scrollToTop} className="flex items-center gap-3 group cursor-pointer">
+              <a href="#home" onClick={scrollToTop} className="flex items-center gap-2 md:gap-3 group cursor-pointer">
                 <img 
                   src={logoUrl} 
                   alt="Nibedika Hostel Logo" 
-                  className={`object-cover rounded-full shadow-md border border-gray-100 transition-all duration-300 ${
-                    isScrolled ? 'w-12 h-12' : 'w-14 h-14'
+                  className={`object-cover rounded-full border border-gray-100 transition-all duration-300 ${
+                    isScrolled ? 'w-8 h-8 md:w-12 md:h-12' : 'w-9 h-9 md:w-14 md:h-14'
                   }`}
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
-                  <span className="font-bold text-xl text-gray-800 leading-none">
+                  <span className="font-bold text-base md:text-xl text-gray-800 leading-none">
                     Nibedika <span className="text-teal-600">Hostel</span>
                   </span>
-                  <span className="text-xs text-gray-500 tracking-wider font-medium">Best Hostel in Dhaka</span>
+                  <span className="text-[9px] md:text-xs text-gray-500 tracking-wider font-medium">Best Hostel in Dhaka</span>
                 </div>
               </a>
             </div>
@@ -118,7 +119,7 @@ const Header: React.FC = () => {
               {/* Desktop Hotline Button - Horizontal Layout */}
               <a 
                 href="tel:01345200218" 
-                className="flex items-center gap-2 bg-[#fcd34d] hover:bg-[#fbbf24] text-gray-900 px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 group"
+                className="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-5 py-2.5 rounded-md transition-colors shadow-sm"
               >
                 <Phone size={18} className="fill-current text-gray-900" />
                 <span className="text-sm font-extrabold uppercase tracking-wide opacity-90">Hotline:</span>
@@ -127,23 +128,19 @@ const Header: React.FC = () => {
             </div>
 
             {/* Mobile Menu Button & Hotline Icon */}
-            <div className="flex items-center gap-3 md:hidden">
+            <div className="flex items-center gap-2 md:hidden">
               <a 
                 href="tel:01345200218" 
-                className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all ${
-                  isScrolled ? 'bg-[#fcd34d] text-gray-900' : 'bg-[#fcd34d]/90 backdrop-blur-sm text-gray-900 shadow-sm'
-                }`}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md transition-colors bg-yellow-400 text-gray-900 shadow-sm"
               >
-                <Phone size={16} className="fill-current" />
-                <span className="text-xs font-bold uppercase tracking-wide">Hotline</span>
+                <Phone size={14} className="fill-current" />
+                <span className="text-[10px] font-bold uppercase tracking-wide">Hotline</span>
               </a>
               <button
                 onClick={() => setIsOpen(true)}
-                className={`transition-colors focus:outline-none ${
-                  isScrolled ? 'text-gray-700 hover:text-teal-600' : 'text-gray-800 hover:text-teal-600'
-                }`}
+                className="transition-colors focus:outline-none p-1 text-gray-800 hover:text-teal-600"
               >
-                <Menu size={28} />
+                <Menu size={24} />
               </button>
             </div>
           </div>

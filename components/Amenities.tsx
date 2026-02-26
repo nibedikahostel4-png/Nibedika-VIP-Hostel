@@ -46,28 +46,28 @@ const Amenities: React.FC = () => {
   ];
 
   return (
-    <section id="amenities" className="py-16 md:py-24 bg-white scroll-mt-28">
+    <section id="amenities" className="py-8 md:py-24 bg-white scroll-mt-20 md:scroll-mt-28 border-b border-gray-200">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 inline-block relative pb-3">
+        <div className="text-center mb-6 md:mb-16">
+          <h2 className="text-lg md:text-3xl font-bold text-gray-900 inline-block relative pb-2 md:pb-3">
             কেন আমাদের বেছে নিবেন?
-            <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 md:w-24 h-1 md:h-1.5 bg-[#fcd34d] rounded-full"></span>
+            <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 md:w-24 h-1 md:h-1.5 bg-yellow-400 rounded-full"></span>
           </h2>
         </div>
 
         {/* Grid - 2 columns mobile (default), 4 columns desktop (md+) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6 max-w-7xl mx-auto">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 border border-gray-100 flex flex-col items-center text-center group h-full"
+              className="bg-white rounded-md md:rounded-lg p-3 md:p-6 shadow-sm hover:shadow transition-shadow duration-200 border border-gray-200 flex flex-col items-center text-center h-full"
             >
-              <div className="w-16 h-16 bg-[#ccfbf1] rounded-full flex items-center justify-center text-[#0d9488] mb-4 group-hover:bg-[#0d9488] group-hover:text-white transition-colors duration-300">
-                {feature.icon}
+              <div className="w-10 h-10 md:w-14 md:h-14 bg-teal-50 rounded-full flex items-center justify-center text-teal-600 mb-2 md:mb-4">
+                {React.cloneElement(feature.icon as React.ReactElement<any>, { className: "w-5 h-5 md:w-7 md:h-7" })}
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">{feature.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{feature.desc}</p>
+              <h3 className="text-xs md:text-lg font-bold text-gray-800 mb-1 md:mb-2">{feature.title}</h3>
+              <p className="text-gray-500 text-[10px] md:text-sm leading-relaxed">{feature.desc}</p>
             </div>
           ))}
         </div>
