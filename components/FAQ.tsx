@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Plus, Minus, HelpCircle } from 'lucide-react';
-import Chatbot from './Chatbot';
 
 const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -106,7 +105,6 @@ const FAQ: React.FC = () => {
                   WhatsApp
                 </a>
              </div>
-             <Chatbot />
           </div>
         </div>
         

@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { MapPin, Banknote, Bot, Star, ShieldCheck, X } from 'lucide-react';
-import Chatbot from './Chatbot';
+import React from 'react';
+import { MapPin, Banknote, Star, ShieldCheck } from 'lucide-react';
 
 const Hero: React.FC = () => {
-  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -77,13 +75,7 @@ const Hero: React.FC = () => {
             আমাদের ভাড়া তালিকা
           </a>
           
-          <button
-            onClick={() => setIsChatModalOpen(true)}
-            className="flex items-center justify-center gap-1.5 bg-teal-600 hover:bg-teal-500 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full font-bold text-[10px] md:text-xs transition-all shadow-md min-w-[130px] md:min-w-[140px]"
-          >
-            <Bot size={12} className="md:w-3.5 md:h-3.5" />
-            ভার্চুয়াল অ্যাসিস্ট্যান্ট
-          </button>
+
 
           <a
             href={`https://wa.me/8801345200218?text=${encodeURIComponent("আসসালামু আলাইকুম, আমি নিবেদিকা হোস্টেল সম্পর্কে বিস্তারিত জানতে চাই।")}`}
@@ -117,25 +109,6 @@ const Hero: React.FC = () => {
             </div>
 
           </div>
-
-      {/* Chatbot Modal */}
-      {isChatModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-            {/* Close Button */}
-            <button 
-              onClick={() => setIsChatModalOpen(false)}
-              className="absolute top-3 right-3 z-10 p-1.5 bg-black/10 hover:bg-black/20 text-gray-800 rounded-full transition-colors"
-              aria-label="Close chat"
-            >
-              <X size={20} />
-            </button>
-            
-            {/* Chatbot Component */}
-            <Chatbot />
-          </div>
-        </div>
-      )}
     </section>
   );
 };
