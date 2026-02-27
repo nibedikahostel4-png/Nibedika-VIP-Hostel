@@ -57,7 +57,7 @@ const Chatbot: React.FC = () => {
       // Also check VITE_API_KEY as a fallback
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.VITE_API_KEY;
 
-      if (!apiKey) {
+      if (!apiKey || apiKey === 'undefined') {
          setMessages(prev => [...prev, { 
           role: 'model', 
           text: "⚠️ API Key পাওয়া যায়নি। অনুগ্রহ করে Netlify Environment Variables-এ 'VITE_GEMINI_API_KEY' নামে আপনার Gemini API Key টি যুক্ত করুন এবং সাইটটি Re-deploy করুন।" 
@@ -76,7 +76,7 @@ const Chatbot: React.FC = () => {
         }));
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.0-flash-exp',
+        model: 'gemini-3-flash-preview',
         contents: [
           ...historyForApi,
           { role: 'user', parts: [{ text: userMessage }] }
