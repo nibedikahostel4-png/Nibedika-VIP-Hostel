@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Minus, HelpCircle } from 'lucide-react';
+import Chatbot from './Chatbot';
 
 const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -45,7 +46,7 @@ const FAQ: React.FC = () => {
           <h2 className="text-lg md:text-3xl font-bold text-gray-900 mb-1 md:mb-3">সচরাচর জিজ্ঞাসিত প্রশ্ন</h2>
           <div className="w-12 md:w-24 h-1 bg-yellow-400 mx-auto rounded-full"></div>
           <p className="mt-2 md:mt-4 text-gray-600 max-w-2xl mx-auto font-medium text-[10px] md:text-sm">
-            আপনার মনের সাধারণ প্রশ্নগুলোর উত্তর এখানে দেওয়া হলো। এছাড়াও বিস্তারিত জানতে আমাদের ভার্চুয়াল অ্যাসিস্ট্যান্টের সাথে কথা বলুন।
+            আপনার মনের সাধারণ প্রশ্নগুলোর উত্তর এখানে দেওয়া হলো। এছাড়াও বিস্তারিত জানতে আমাদের এআই অ্যাসিস্ট্যান্টের সাথে কথা বলুন।
           </p>
         </div>
 
@@ -90,8 +91,8 @@ const FAQ: React.FC = () => {
           <div className="lg:sticky lg:top-24">
              <div className="mb-3 md:mb-4 flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-4">
                 <div className="text-center sm:text-left">
-                  <h3 className="text-base md:text-xl font-bold text-gray-800 mb-0.5 md:mb-1">ভার্চুয়াল অ্যাসিস্ট্যান্ট</h3>
-                  <p className="text-gray-600 text-[10px] md:text-sm">আপনার অন্য কোনো প্রশ্ন থাকলে জিজ্ঞাসা করুন।</p>
+                  <h3 className="text-base md:text-xl font-bold text-gray-800 mb-0.5 md:mb-1">এআই অ্যাসিস্ট্যান্ট</h3>
+                  <p className="text-gray-600 text-[10px] md:text-sm">আপনার অন্য কোনো প্রশ্ন থাকলে সরাসরি জিজ্ঞাসা করুন।</p>
                 </div>
                 <a
                   href={`https://wa.me/8801345200218?text=${encodeURIComponent("আসসালামু আলাইকুম, আমি নিবেদিকা হোস্টেল সম্পর্কে বিস্তারিত জানতে চাই।")}`}
@@ -105,6 +106,7 @@ const FAQ: React.FC = () => {
                   WhatsApp
                 </a>
              </div>
+             <Chatbot />
           </div>
         </div>
         

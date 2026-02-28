@@ -65,7 +65,6 @@ const Header: React.FC = () => {
     { name: 'ব্রাঞ্চসমূহ', href: '#branches' },
     { name: 'গ্যালারি', href: '#gallery' },
     { name: 'ভাড়া ও খরচ', href: '#pricing' },
-    { name: 'ভার্চুয়াল অ্যাসিস্ট্যান্ট', href: '#faq' },
     { name: 'যোগাযোগ', href: '#footer' },
   ];
 

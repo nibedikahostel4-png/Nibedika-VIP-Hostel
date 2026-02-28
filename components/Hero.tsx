@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Banknote, Star, ShieldCheck } from 'lucide-react';
+import { MapPin, Banknote, Star, ShieldCheck, Facebook } from 'lucide-react';
 
 const Hero: React.FC = () => {
 
@@ -51,9 +51,22 @@ const Hero: React.FC = () => {
         </h1>
 
         {/* Subtext */}
-        <p className="text-[11px] sm:text-xs md:text-sm text-gray-100 font-medium mb-8 md:mb-10 max-w-xl leading-relaxed drop-shadow-md">
+        <p className="text-[11px] sm:text-xs md:text-sm text-gray-100 font-medium mb-4 md:mb-6 max-w-xl leading-relaxed drop-shadow-md">
           ছাত্র-ছাত্রী ও কর্মজীবী নারী-পুরুষের জন্য ঢাকার প্রাইম লোকেশনে আধুনিক ও নিরাপদ আবাসন ব্যবস্থা। ৩৫ বছরের অভিজ্ঞতায় আমরাই সেরা।
         </p>
+
+        {/* Facebook Page Button */}
+        <div className="mb-6 md:mb-8">
+          <a
+            href="https://www.facebook.com/nibedikahostel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#1877F2] hover:bg-[#166fe5] text-white px-5 py-2 md:px-6 md:py-2.5 rounded-full font-bold text-xs md:text-sm transition-all shadow-lg hover:scale-105"
+          >
+            <Facebook size={16} className="md:w-5 md:h-5" />
+            আমাদের ফেসবুক পেজ
+          </a>
+        </div>
 
         {/* Buttons - Exact 2x2 Grid on Mobile */}
         <div className="flex flex-wrap justify-center gap-2 max-w-[300px] md:max-w-md mx-auto mb-10 md:mb-12">
